@@ -12,8 +12,8 @@ $(document).ready(function(){
                         <td>${listRole[i].name}</td>
                         <td>${listRole[i].desc}</td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-primary">Sửa</a>
-                            <a href="#" class="btn btn-sm btn-danger">Xóa</a>
+                            <a href="#" class="btn btn-sm btn-primary">Edit</a>
+                            <a href="#" id-role=${listRole[i].id} class="btn btn-sm btn-danger btn-delete">Delete</a>
                         </td>
                     </tr>`;
         }
@@ -38,4 +38,16 @@ $(document).ready(function(){
         })
     })
 
+})
+$(document).on("click",".btn-delete", function(){
+    var id = $(this).attr("id-role");
+    var This = $(this);  
+    var currentRow = $(this).closest("tr");      
+    $.ajax({
+        type: "DELETE",
+        url: "http://localhost:8080/api/role/delete/" + id,
+        success: function(){
+            currentRow.remove();
+        }
+    })
 })

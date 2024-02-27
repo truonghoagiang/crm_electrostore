@@ -16,24 +16,23 @@ $(document).ready(function(){
             <td>${listUser[i].role}</td>
             <td>
                 <a href="#" class="btn btn-sm btn-primary">Sửa</a>
-                <a href="#" id-user="${listUser[i].id}" class="btn btn-sm btn-danger btn-delete">Xóa</a>
+                <a href="#"  id-user="${listUser[i].id}" class="btn btn-sm btn-danger btn-delete">Delete</a>
                 <a href="user-details.html" class="btn btn-sm btn-info">Xem</a>
             </td>
         </tr>`;
         }
         $('#user-data').append(html)
     })
+
     $.ajax({
         url: "http://localhost:8080/api/user/add-user",
         method: "get"
     }).done(function(result){
-        //console.log("server tra ve ", result.data)
         var listRole = result.data
         var html = ""
         for(i=0;i<listRole.length;i++){
             // var jsonRole = JSON.stringify(listRole[i]);
             html += `<option value="${listRole[i].id}">${listRole[i].name}</option>`;
-            //console.log(html);
         }
         $('#role').append(html)
         
@@ -59,25 +58,18 @@ $(document).ready(function(){
                 }
             })
         })
+    }) 
+})
+
+$(document).on("click",".btn-delete", function(){
+    var id = $(this).attr("id-user");
+    var This = $(this);  
+    var currentRow = $(this).closest("tr");      
+    $.ajax({
+        type: "DELETE",
+        url: "http://localhost:8080/api/user/delete/" + id,
+        success: function(){
+            currentRow.remove();
+        }
     })
-    $(".btn-delete").click(function(){
-		 
-        var id = $(this).attr("id-user");
-        var This = $(this);
-        
-        $.ajax({
-            type: "DELETE",
-            url: "http://localhost:8080/api/user/delete/" + id
-        })
-        .done(function(result){
-            if(result.data == true){
-                This.closest("tr").remove()
-            }
-            console.log(result)
-            
-        })
-    }
-    
-    )
-    
 })

@@ -14,8 +14,8 @@ $(document).ready(function(){
                         <td>${listCategory[i].name}</td>
                         <td>${listCategory[i].desc}</td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-primary">Sửa</a>
-                            <a href="#" class="btn btn-sm btn-danger">Xóa</a>
+                            <a href="#" class="btn btn-sm btn-primary">Edit</a>
+                            <a href="#" id-category="${listCategory[i].id}" class="btn btn-sm btn-danger btn-delete">Delete</a>
                         </td>
                     </tr>`;
         }
@@ -41,4 +41,16 @@ $(document).ready(function(){
         })
     })
 
+})
+$(document).on("click",".btn-delete", function(){
+    var id = $(this).attr("id-category");
+    var This = $(this);  
+    var currentRow = $(this).closest("tr");      
+    $.ajax({
+        type: "DELETE",
+        url: "http://localhost:8080/api/category/delete/" + id,
+        success: function(){
+            currentRow.remove();
+        }
+    })
 })
